@@ -1,8 +1,15 @@
 name: githubaction2
 on:
   push:
-     branches:
-        - main
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+   - cron: "0 0  * * *"
+     
         
 jobs:
  jobs1:
@@ -12,9 +19,34 @@ jobs:
      run: echo "hello world"
  jobs2: 
   runs-on: ubuntu-latest
+  needs: jobs1
   steps:
    - name: envandsecrets
      env: 
       name: "chiku" 
-      password: ${{secerts}}
+      password: ${{secrets.MY_PASS}}
+ jobs3:
+   runs-on: ubuntu-latest
+   needs: jobs2
+   steps:
+   - name: file
+     run: echo "chiku" > first.txt
+    
+   - name: checkout
+     uses: actions/upload-artifact@v4
+     with:
+      name: upload
+      path: first.txt
+ jobs4: 
+  runs-on: ubuntu-latest
+  needs: jobs3
+  steps:
+  - name: downolad
+    uses: actions/download-artifact@v4
+    with:
+     name: download
+     run: cat first.txt
+  - name: output
+    run: echo output
    
+     
