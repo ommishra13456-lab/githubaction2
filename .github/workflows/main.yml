@@ -1,0 +1,20 @@
+name: githubaction2
+on:
+  push:
+     branches:
+        - main
+        
+jobs:
+ jobs1:
+   runs-on: ubuntu-latest
+   steps:
+   - name:  printhello
+     run: echo "hello world"
+ jobs2: 
+  runs-on: ubuntu-latest
+  steps:
+   - name: envandsecrets
+     env: 
+      name: "chiku" 
+      password: ${{secerts}}
+   
